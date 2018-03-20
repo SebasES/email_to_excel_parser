@@ -64,7 +64,7 @@ while True:
                     # not multipart - i.e. plain text, no attachments, keeping fingers crossed
                     else:
                         body = msg.get_payload(decode=True)
-                    print 'Message : ' +body
+                    print 'Message : ' + body
                 except:
                     print 'Email body couldnt be parsed... This doesnt seem to be a plain-text email'
                 ws.append([i,email_date, email_from, email_subject, body])
