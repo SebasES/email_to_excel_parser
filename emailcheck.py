@@ -43,20 +43,31 @@ while True:
             email_from = msg['from']
             email_date = msg['date']
             email_date = email_date[5:len(email_date) - 6]
-            email_body = 'N/A'
+            body = 'N/A'
             if email_subject.startswith(Subject_Startswith):
                 print 'From : ' + email_from + '\n'
                 print 'Subject : ' + email_subject + '\n'
                 print 'Date : ' + email_date + '\n'
                 print 'UID : ' + i + '\n'
                 try:
-                    for part in msg.walk():
-                        email_body = display_visible_html_using_re(part.get_payload())
-                        print email_body
+                    body = ""
 
+                    if msg.is_multipart():
+                        for part in msg.walk():
+                            ctype = part.get_content_type()
+                            cdispo = str(part.get('Content-Disposition'))
+
+                            # skip any text/plain (txt) attachments
+                            if ctype == 'text/plain' and 'attachment' not in cdispo:
+                                body = part.get_payload(decode=True)  # decode
+                                break
+                    # not multipart - i.e. plain text, no attachments, keeping fingers crossed
+                    else:
+                        body = msg.get_payload(decode=True)
+                    print 'Message : ' +body
                 except:
                     print 'Email body couldnt be parsed... This doesnt seem to be a plain-text email'
-                ws.append([email_date, email_from, email_subject, email_body, i])
+                ws.append([i,email_date, email_from, email_subject, body])
 
     wb.save(filename)
     time.sleep(30)
