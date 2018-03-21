@@ -67,6 +67,7 @@ while True:
                     print 'Message : ' + body
                 except:
                     print 'Email body couldnt be parsed... This doesnt seem to be a plain-text email'
+                print '_______________________________________________________________________________' + '\n'
                 ws.append([i,email_date, email_from, email_subject, body])
 
     wb.save(filename)
