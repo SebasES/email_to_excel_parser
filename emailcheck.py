@@ -2,14 +2,14 @@ import time
 import imaplib
 import email
 import re
-from openpyxl import Workbook
+from openpyxl import load_workbook
 import textlog
 from config import *
 
+filename = 'Email_Log.xlsx'
 textlog.start_logging('Email_Log_' + time.strftime("%Y_%m_%d_%Hh_%Mm") + '.txt')
-wb = Workbook()
+wb = load_workbook(filename)
 ws = wb.active
-filename = 'Email_Log_' + time.strftime("%Y_%m_%d_%Hh_%Mm") + '.xlsx'
 
 def display_visible_html_using_re(text):
     return(re.sub("(\<.*?\>)", "",text))
